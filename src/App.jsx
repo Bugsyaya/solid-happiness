@@ -24,7 +24,7 @@ function App() {
     setBeforePixel(mapperToPixel(before?.values))
     setInsidePixel(mapperToPixel(inside?.values))
     const allInfos = mapperToPixel(info?.values)
-    setInfoPixel(allInfos)
+    setInfoPixel([allInfos?.[0]])
     setMoreInfoPixel(allInfos)
   }, [before, inside, info])
   
@@ -39,17 +39,24 @@ function App() {
         <div className='flex gap-1 m-1'>
           {beforePixel?.map((pixel, i) => <div key={i} className='flex flex-col gap-3'>
             {pixel?.map(p => (
-              <div key={p.id}><Cost informations={p}/></div>
+              <div key={p.id} className='block'><Cost informations={p}/></div>
             ))}
           </div>
           )}
         </div>
         <div>
           <div className='absolute m-1'>
-            {infoPixel && infoPixel[0]?.map(pixel => <div key={pixel.id}><Cost informations={pixel} moreInfo={moreInfoPixel}/></div>)}
+            {infoPixel?.map((pixel, i) => <div key={i} className='flex flex-col gap-3'>
+              {pixel?.map(p => (
+                <div key={p.id}>
+                  <Cost informations={p} moreInfo={moreInfoPixel}/>
+                </div>
+              ))}
+            </div>
+            )}
           </div>
           <div className='absolute flex gap-1 m-1 justify-between' style={{width: `${width}px`}}>
-            {insidePixel?.map((pixel, i) => <div key={i} className='flex flex-col gap-6 justify-between w-screen'>
+            {insidePixel?.map((pixel, i) => <div key={i} className='flex flex-col gap-3 justify-between'>
               {pixel?.map(p => (
                 <div key={p.id}>
                   <Cost informations={p}/>
