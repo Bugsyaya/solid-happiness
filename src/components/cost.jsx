@@ -1,21 +1,8 @@
-import { useEffect, useState } from "react"
+import { calculSize } from '../utils/calculSize'
 import './cost.css'
 
 export const Cost = ({informations, moreInfo}) => {
-  const [height, setHeight] = useState()
-  const [width, setWidth] = useState()
-
-  useEffect(() => {
-    const nbPixel = informations['Valeur (€)']/1000
-    const sqrt = Math.round(Math.sqrt(nbPixel))
-
-    if (nbPixel/sqrt > 500) {
-      setHeight(500)
-    } else setHeight(nbPixel/sqrt)
-
-    setWidth(nbPixel/height)
-
-  }, [informations, height])
+  const {width, height} = calculSize(informations['Valeur (€)'])
 
   return <div className={`${moreInfo ? 'z-0' : 'z-10 mt-9 ml-9'}`}>
     <p>{informations['Valeur (€)']} €</p>

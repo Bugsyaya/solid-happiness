@@ -3,6 +3,7 @@ import './App.css'
 import { Cost } from './components/cost'
 import { getPixelBefore, getPixelInfo, getPixelInside } from './tools/api'
 import { mapperToPixel } from './tools/mapper'
+import { calculSize } from './utils/calculSize'
 
 function App() {
   const [before, setBefore] = useState()
@@ -26,6 +27,8 @@ function App() {
     setInfoPixel(allInfos)
     setMoreInfoPixel(allInfos)
   }, [before, inside, info])
+  
+  const {width} = calculSize(infoPixel?.[0]?.[0]?.['Valeur (€)']) || {}
 
   return (
     <div className='flex h-screen text-[#1D1D1B] text-lg font-light'>
@@ -34,7 +37,7 @@ function App() {
       </div>
       <div className='flex gap-2 m-1'>
         <div className='flex gap-1 m-1'>
-          {beforePixel?.map(pixel => <div className='flex flex-col gap-3'>
+          {beforePixel?.map((pixel, i) => <div key={i} className='flex flex-col gap-3'>
             {pixel?.map(p => (
               <div key={p.id}><Cost informations={p}/></div>
             ))}
@@ -45,8 +48,8 @@ function App() {
           <div className='absolute m-1'>
             {infoPixel && infoPixel[0]?.map(pixel => <div key={pixel.id}><Cost informations={pixel} moreInfo={moreInfoPixel}/></div>)}
           </div>
-          <div className='absolute flex gap-1 m-1'>
-            {insidePixel?.map(pixel => <div className='flex flex-col gap-6 justify-between w-screen'>
+          <div className='absolute flex gap-1 m-1 justify-between' style={{width: `${width}px`}}>
+            {insidePixel?.map((pixel, i) => <div key={i} className='flex flex-col gap-6 justify-between w-screen'>
               {pixel?.map(p => (
                 <div key={p.id}>
                   <Cost informations={p}/>
